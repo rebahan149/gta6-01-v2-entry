@@ -1,0 +1,205 @@
+/* CORAL KEY: HIGH TIDE — screen styling. Warm golden-hour chrome over the
+   canvas: sunset oranges, deep teal shadows, neon accents. */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #17102a; }
+body { font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif; color: #fff7ea; }
+.hidden { display: none !important; }
+#game-root { position: fixed; inset: 0; }
+#canvas-holder, #canvas-holder canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---------- shared chrome ---------- */
+button {
+  font: inherit; font-weight: 800; letter-spacing: .12em; cursor: pointer;
+  color: #2a1503; background: linear-gradient(180deg, #ffd23e, #ff9a3c);
+  border: 0; border-radius: 10px; padding: 12px 26px; margin: 5px;
+  box-shadow: 0 4px 0 #b35c12, 0 10px 24px rgba(0,0,0,.45);
+}
+button:hover { filter: brightness(1.08); }
+.overlay {
+  position: absolute; inset: 0; z-index: 40; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  background: radial-gradient(ellipse at 50% 65%, rgba(23,10,40,.25), rgba(10,4,24,.88));
+}
+.overlay h2 { font-size: 54px; letter-spacing: .18em; text-shadow: 0 4px 0 #7a2d5e, 0 10px 30px #000; margin-bottom: 10px; }
+.overlay p { max-width: 560px; opacity: .92; margin-bottom: 16px; line-height: 1.45; }
+
+/* ---------- start screen ---------- */
+#start-screen {
+  position: absolute; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(20,8,38,.06) 40%, rgba(20,8,38,.55));
+}
+#start-inner { text-align: center; padding: 30px 44px; }
+#start-kicker { letter-spacing: .5em; font-size: 14px; color: #ffe9b0; text-shadow: 0 2px 8px #000; }
+#start-title {
+  font-size: 92px; line-height: .95; font-weight: 900; letter-spacing: .04em;
+  background: linear-gradient(180deg, #fff3c4 20%, #ffb35c 55%, #ff5f9e 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 5px 0 rgba(90,20,70,.85)) drop-shadow(0 14px 28px rgba(0,0,0,.6));
+}
+#start-sub { letter-spacing: .42em; font-size: 19px; color: #7de8ff; text-shadow: 0 2px 10px #000; margin: 6px 0 14px; }
+#start-blurb { max-width: 540px; margin: 0 auto 18px; line-height: 1.5; text-shadow: 0 2px 8px #000; }
+#btn-start { font-size: 20px; padding: 15px 40px; }
+#start-controls { margin-top: 16px; font-size: 12.5px; letter-spacing: .06em; opacity: .85; text-shadow: 0 1px 6px #000; }
+
+/* ---------- HUD frame ---------- */
+#hud { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+#hud-top-right { position: absolute; top: 14px; right: 18px; text-align: right; }
+#hud-money { font-size: 30px; font-weight: 900; color: #a8ffb0; text-shadow: 0 2px 0 #14521c, 0 3px 10px rgba(0,0,0,.7); }
+#hud-respect-wrap { margin-top: 2px; }
+#hud-respect-label { font-size: 11px; letter-spacing: .22em; color: #ffd9ec; text-shadow: 0 1px 5px #000; }
+#hud-respect-label b { color: #ffd23e; }
+#hud-respect-bar { width: 190px; height: 8px; margin-left: auto; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 5px; overflow: hidden; }
+#hud-respect-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #ff5f9e, #ffd23e); transition: width .3s; }
+#hud-wanted { font-size: 25px; letter-spacing: 3px; color: #ffd23e; text-shadow: 0 0 9px rgba(255,160,40,.9), 0 2px 4px #000; min-height: 30px; }
+#hud-wanted .off { color: rgba(255,255,255,.22); text-shadow: none; }
+#hud-clock { font-size: 13px; letter-spacing: .18em; opacity: .9; text-shadow: 0 1px 5px #000; }
+
+#hud-bottom-left { position: absolute; left: 16px; bottom: 14px; }
+#minimap { border-radius: 50%; border: 3px solid rgba(255,240,210,.75); box-shadow: 0 8px 26px rgba(0,0,0,.55); background: #14586e; }
+#hud-district { margin-top: 5px; font-weight: 900; letter-spacing: .14em; font-size: 14.5px; text-shadow: 0 2px 6px #000; }
+#hud-standing-wrap { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+#hud-standing-label { font-size: 9.5px; letter-spacing: .2em; opacity: .85; }
+#hud-standing-bar { width: 92px; height: 7px; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 4px; overflow: hidden; }
+#hud-standing-fill { height: 100%; width: 50%; background: linear-gradient(90deg, #39e6ff, #8dffb0); transition: width .3s; }
+#hud-standing-word { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; color: #8dffb0; text-shadow: 0 1px 4px #000; }
+
+#hud-bottom-right { position: absolute; right: 18px; bottom: 16px; text-align: right; }
+#hud-health-wrap { width: 190px; height: 11px; margin-left: auto; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 6px; overflow: hidden; }
+#hud-health-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #ff5f5f, #ffb35c); transition: width .2s; }
+#hud-weapon { font-size: 17px; font-weight: 900; letter-spacing: .14em; margin-top: 5px; text-shadow: 0 2px 6px #000; }
+#hud-ammo { font-size: 13px; opacity: .9; }
+#hud-speed { font-size: 21px; font-weight: 900; color: #7de8ff; text-shadow: 0 2px 6px #000; }
+#hud-car-name { font-size: 12px; letter-spacing: .16em; opacity: .9; }
+
+/* ---------- crew cards ---------- */
+#hud-crew { position: absolute; top: 14px; left: 16px; display: flex; flex-direction: column; gap: 7px; }
+.crew-card {
+  display: flex; align-items: center; gap: 8px; padding: 5px 10px 5px 5px;
+  background: rgba(12,8,28,.62); border: 1px solid rgba(255,255,255,.28); border-radius: 10px;
+  box-shadow: 0 5px 16px rgba(0,0,0,.4);
+}
+.crew-face {
+  width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 17px; color: #10131c; border: 2px solid rgba(255,255,255,.8);
+}
+#crew-face-0 { background: #39d0c4; }
+#crew-face-1 { background: #ff5f9e; }
+.crew-name { font-size: 12px; font-weight: 900; letter-spacing: .18em; }
+.crew-hp { width: 86px; height: 6px; background: rgba(255,255,255,.18); border-radius: 3px; overflow: hidden; margin-top: 3px; }
+.crew-hp-fill { height: 100%; width: 100%; background: #8dffb0; transition: width .25s; }
+.crew-card.downed { opacity: .55; filter: grayscale(.7); }
+#hud-crew-car { font-size: 11px; font-weight: 800; letter-spacing: .14em; color: #7de8ff; text-shadow: 0 1px 5px #000; }
+
+/* ---------- centre-top stack: objective, dispatch, banner ---------- */
+#hud-objective {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 430px; text-align: center;
+  background: rgba(12,8,28,.6); border: 1px solid rgba(255,210,62,.5); border-radius: 12px; padding: 8px 14px;
+}
+#hud-objective-title { font-weight: 900; letter-spacing: .16em; color: #ffd23e; font-size: 15px; }
+#hud-objective-text { font-size: 13.5px; margin-top: 2px; }
+#hud-objective-timer { font-size: 13px; font-weight: 800; color: #ff9a3c; }
+#hud-dispatch {
+  position: absolute; top: 96px; left: 50%; transform: translateX(-50%); width: 520px; text-align: center;
+  font-size: 13px; letter-spacing: .04em; color: #cfe8ff; background: rgba(8,14,30,.66);
+  border: 1px solid rgba(120,180,255,.45); border-radius: 8px; padding: 6px 12px;
+}
+#hud-dispatch-tag { color: #7db8ff; font-weight: 900; letter-spacing: .1em; }
+#hud-banner {
+  position: absolute; top: 34%; left: 50%; transform: translateX(-50%); text-align: center; width: 700px;
+}
+#hud-banner-district {
+  font-size: 44px; font-weight: 900; letter-spacing: .3em; color: #fff3c4;
+  text-shadow: 0 3px 0 rgba(122,45,94,.9), 0 10px 30px rgba(0,0,0,.8);
+}
+#hud-banner-standing { font-size: 15px; letter-spacing: .34em; color: #8dffb0; text-shadow: 0 2px 8px #000; margin-top: 4px; }
+
+/* ---------- race HUD ---------- */
+#hud-race {
+  position: absolute; top: 130px; right: 18px; display: flex; align-items: center; gap: 10px;
+  background: rgba(12,8,28,.62); border: 1px solid rgba(255,255,255,.35); border-radius: 12px; padding: 8px 14px;
+}
+#hud-race-pos { font-size: 40px; font-weight: 900; color: #ffd23e; text-shadow: 0 3px 8px #000; }
+#hud-race-pos span { font-size: 19px; color: #fff7ea; }
+#hud-race-name { font-size: 11px; font-weight: 900; letter-spacing: .2em; color: #7de8ff; }
+#hud-race-check { font-size: 13px; font-weight: 800; }
+#hud-race-time { font-size: 12.5px; opacity: .9; }
+#hud-countdown {
+  position: absolute; top: 36%; left: 50%; transform: translate(-50%,-50%);
+  font-size: 120px; font-weight: 900; color: #ffd23e;
+  text-shadow: 0 6px 0 rgba(122,45,94,.9), 0 16px 44px rgba(0,0,0,.85);
+}
+
+/* ---------- prompts, toasts, bust ---------- */
+#hud-prompt {
+  position: absolute; bottom: 128px; left: 50%; transform: translateX(-50%);
+  background: rgba(12,8,28,.72); border: 1px solid rgba(255,255,255,.4); border-radius: 9px;
+  padding: 8px 18px; font-size: 15px; font-weight: 700; letter-spacing: .05em;
+}
+#hud-prompt b { color: #ffd23e; }
+#hud-toast {
+  position: absolute; bottom: 176px; left: 50%; transform: translateX(-50%);
+  font-size: 19px; font-weight: 900; letter-spacing: .1em; color: #fff3c4;
+  text-shadow: 0 2px 0 rgba(122,45,94,.9), 0 6px 18px rgba(0,0,0,.8); white-space: nowrap;
+}
+#hud-bust-wrap { position: absolute; bottom: 220px; left: 50%; transform: translateX(-50%); text-align: center; }
+#hud-bust-label { font-weight: 900; letter-spacing: .3em; color: #ff8080; text-shadow: 0 2px 8px #000; }
+#hud-bust-bar { width: 240px; height: 10px; background: rgba(0,0,0,.6); border: 1px solid #ff8080; border-radius: 6px; overflow: hidden; margin-top: 4px; }
+#hud-bust-fill { height: 100%; width: 0%; background: #ff4040; }
+#crosshair {
+  position: absolute; top: 50%; left: 50%; width: 14px; height: 14px; transform: translate(-50%,-50%);
+  border: 2px solid rgba(255,255,255,.9); border-radius: 50%; box-shadow: 0 0 8px rgba(0,0,0,.8);
+}
+
+/* ---------- dialogue & radio ---------- */
+#dialogue {
+  position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); width: 620px;
+  background: rgba(10,6,24,.82); border: 1px solid rgba(255,210,62,.55); border-left: 6px solid #ffd23e;
+  border-radius: 10px; padding: 12px 18px 9px;
+}
+#dialogue-name { font-weight: 900; letter-spacing: .18em; color: #ffd23e; font-size: 13.5px; }
+#dialogue-text { font-size: 16.5px; line-height: 1.45; margin-top: 3px; }
+#dialogue-hint { font-size: 11px; opacity: .65; margin-top: 5px; letter-spacing: .12em; }
+#radio-tag {
+  position: absolute; bottom: 108px; right: 18px; font-size: 13px; font-weight: 800; letter-spacing: .14em;
+  color: #7de8ff; background: rgba(12,8,28,.6); padding: 5px 12px; border-radius: 8px;
+}
+
+/* ---------- weapon wheel ---------- */
+#wheel {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 30;
+  display: flex; gap: 16px; align-items: center; background: rgba(10,6,24,.55);
+  padding: 20px 26px; border-radius: 18px; border: 1px solid rgba(255,255,255,.3);
+}
+.wheel-slot {
+  width: 92px; height: 92px; border-radius: 50%; background: rgba(255,255,255,.1);
+  border: 3px solid rgba(255,255,255,.35); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; font-size: 32px;
+}
+.wheel-slot span { font-size: 11px; font-weight: 900; letter-spacing: .14em; margin-top: 3px; }
+.wheel-slot.sel { border-color: #ffd23e; background: rgba(255,210,62,.22); box-shadow: 0 0 24px rgba(255,210,62,.5); }
+#wheel-hint { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 12px; opacity: .85; }
+
+/* ---------- garage ---------- */
+#garage {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 35; width: 480px;
+  background: rgba(12,9,26,.93); border: 2px solid #ff9a3c; border-radius: 16px; padding: 22px 26px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.7);
+}
+#garage h2 { letter-spacing: .1em; font-size: 23px; }
+#garage h3 { margin: 13px 0 6px; font-size: 12.5px; letter-spacing: .24em; color: #ffd23e; }
+#garage-money { color: #a8ffb0; font-weight: 900; margin-top: 4px; }
+#garage button { padding: 8px 14px; font-size: 12.5px; margin: 3px; box-shadow: none; }
+#garage button.owned { background: linear-gradient(180deg, #8dffb0, #43a06b); }
+#garage button:disabled { opacity: .45; cursor: default; }
+#garage-msg { min-height: 18px; font-size: 13px; color: #ffd9ec; margin-top: 8px; }
+#garage-close { margin-top: 12px; }
+
+#help-table { border-collapse: collapse; margin: 8px auto 14px; font-size: 14px; }
+#help-table td { padding: 4px 12px; text-align: left; }
+#help-table td:nth-child(odd) { font-weight: 900; color: #ffd23e; text-align: right; }
+
+#end-screen h2 { color: #ff8080; }
+#errbox {
+  position: absolute; left: 8px; bottom: 8px; z-index: 99; max-width: 60%; white-space: pre-wrap;
+  color: #ff9a9a; font: 12px monospace; background: rgba(40,0,0,.75); padding: 6px 9px; border-radius: 6px;
+}

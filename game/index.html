@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORAL KEY: HIGH TIDE</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-root">
+  <div id="canvas-holder"></div>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" class="hidden">
+    <div id="hud-crew">
+      <div class="crew-card" id="crew-card-0">
+        <div class="crew-face" id="crew-face-0">M</div>
+        <div class="crew-meta">
+          <div class="crew-name">MICO</div>
+          <div class="crew-hp"><div class="crew-hp-fill" id="crew-hp-0"></div></div>
+        </div>
+      </div>
+      <div class="crew-card" id="crew-card-1">
+        <div class="crew-face" id="crew-face-1">P</div>
+        <div class="crew-meta">
+          <div class="crew-name">PALOMA</div>
+          <div class="crew-hp"><div class="crew-hp-fill" id="crew-hp-1"></div></div>
+        </div>
+      </div>
+      <div id="hud-crew-car" class="hidden">🚗 CREW CAR ROLLING</div>
+    </div>
+
+    <div id="hud-top-right">
+      <div id="hud-money">$0</div>
+      <div id="hud-respect-wrap">
+        <span id="hud-respect-label">RESPECT · <b id="hud-rank">NOBODY</b></span>
+        <div id="hud-respect-bar"><div id="hud-respect-fill"></div></div>
+      </div>
+      <div id="hud-wanted" title="Wanted level"></div>
+      <div id="hud-clock"></div>
+    </div>
+
+    <div id="hud-bottom-left">
+      <canvas id="minimap" width="190" height="190"></canvas>
+      <div id="hud-district">Coral Key</div>
+      <div id="hud-standing-wrap">
+        <span id="hud-standing-label">STANDING</span>
+        <div id="hud-standing-bar"><div id="hud-standing-fill"></div></div>
+        <span id="hud-standing-word">KNOWN</span>
+      </div>
+    </div>
+
+    <div id="hud-bottom-right">
+      <div id="hud-health-wrap"><div id="hud-health-fill"></div></div>
+      <div id="hud-weapon">FISTS</div>
+      <div id="hud-ammo"></div>
+      <div id="hud-speed"></div>
+      <div id="hud-car-name"></div>
+    </div>
+
+    <div id="hud-objective" class="hidden">
+      <div id="hud-objective-title"></div>
+      <div id="hud-objective-text"></div>
+      <div id="hud-objective-timer"></div>
+    </div>
+    <div id="hud-dispatch" class="hidden"><span id="hud-dispatch-tag">📻 CKPD DISPATCH</span> <span id="hud-dispatch-text"></span></div>
+    <div id="hud-banner" class="hidden">
+      <div id="hud-banner-district"></div>
+      <div id="hud-banner-standing"></div>
+    </div>
+
+    <div id="hud-race" class="hidden">
+      <div id="hud-race-pos">4<span>/4</span></div>
+      <div id="hud-race-info">
+        <div id="hud-race-name">STREET RACE</div>
+        <div id="hud-race-check">CHECKPOINT 0/12</div>
+        <div id="hud-race-time">0:00.0</div>
+      </div>
+    </div>
+    <div id="hud-countdown" class="hidden">3</div>
+
+    <div id="hud-prompt" class="hidden"></div>
+    <div id="hud-toast" class="hidden"></div>
+    <div id="hud-bust-wrap" class="hidden">
+      <div id="hud-bust-label">BUSTED IN…</div>
+      <div id="hud-bust-bar"><div id="hud-bust-fill"></div></div>
+    </div>
+    <div id="crosshair" class="hidden"></div>
+
+    <div id="dialogue" class="hidden">
+      <div id="dialogue-name"></div>
+      <div id="dialogue-text"></div>
+      <div id="dialogue-hint">E ▸ continue</div>
+    </div>
+
+    <div id="radio-tag" class="hidden"></div>
+  </div>
+
+  <!-- ============ Weapon wheel ============ -->
+  <div id="wheel" class="hidden">
+    <div class="wheel-slot" data-w="0">👊<span>FISTS</span></div>
+    <div class="wheel-slot" data-w="1">🔫<span>PISTOL</span></div>
+    <div class="wheel-slot" data-w="2">💥<span>SMG</span></div>
+    <div id="wheel-hint">1 · 2 · 3 to choose — release Q to close</div>
+  </div>
+
+  <!-- ============ Garage ============ -->
+  <div id="garage" class="hidden">
+    <h2>🔧 HIGH TIDE GARAGE</h2>
+    <div id="garage-money"></div>
+    <h3>Paint</h3>
+    <div id="garage-paints"></div>
+    <h3>Engine</h3>
+    <div id="garage-engine"></div>
+    <h3>Armour</h3>
+    <div id="garage-armour"></div>
+    <div id="garage-msg"></div>
+    <button id="garage-close">DONE (G)</button>
+  </div>
+
+  <!-- ============ Start screen ============ -->
+  <div id="start-screen">
+    <div id="start-inner">
+      <div id="start-kicker">THE TIDE IS RISING ON</div>
+      <h1 id="start-title">CORAL KEY</h1>
+      <div id="start-sub">— H I G H &nbsp; T I D E —</div>
+      <p id="start-blurb">The island has changed since the ferry brought you in.
+      Five districts, one crew, and a police force with roadblocks and a helicopter.
+      Run jobs, win races, own every street — district by district.</p>
+      <button id="btn-start">▶ &nbsp;START ENGINE</button>
+      <button id="btn-continue" class="hidden">↻ &nbsp;CONTINUE (saved game)</button>
+      <div id="start-controls">
+        WASD drive &amp; walk · F enter car · E talk / race · Q weapon wheel · G garage ·
+        R radio · P pause · H help
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Pause ============ -->
+  <div id="pause-screen" class="hidden overlay">
+    <h2>PAUSED</h2>
+    <p id="pause-standing"></p>
+    <button id="btn-resume">RESUME</button>
+    <button id="btn-help2">HELP</button>
+    <button id="btn-restart">RESTART DAY</button>
+  </div>
+
+  <!-- ============ Help ============ -->
+  <div id="help-screen" class="hidden overlay">
+    <h2>HOW TO PLAY</h2>
+    <table id="help-table">
+      <tr><td>W A S D</td><td>Walk / drive</td><td>Shift</td><td>Sprint</td></tr>
+      <tr><td>Space</td><td>Jump · handbrake drift in car</td><td>F</td><td>Enter / exit car</td></tr>
+      <tr><td>Mouse</td><td>Orbit camera (click game to lock)</td><td>Click</td><td>Shoot</td></tr>
+      <tr><td>1 2 3 / Q</td><td>Weapons / weapon wheel</td><td>E</td><td>Talk · enter race</td></tr>
+      <tr><td>R</td><td>Radio station (in car)</td><td>G</td><td>Garage (in car)</td></tr>
+      <tr><td>P / Esc</td><td>Pause</td><td>H</td><td>This help</td></tr>
+    </table>
+    <p>Follow the gold marker to work jobs — your crew rolls with you. Every district
+    keeps a <b>standing</b> meter: jobs and race wins raise it, chaos lowers it.
+    Street races start at the chequered flags. CKPD escalates hard: roadblocks at 4★,
+    and at 5★ AIR ONE puts a searchlight on you. Lose the heat by breaking line of sight.</p>
+    <button id="btn-help-close">CLOSE (H)</button>
+  </div>
+
+  <!-- ============ Busted / Wasted ============ -->
+  <div id="end-screen" class="hidden overlay">
+    <h2 id="end-title">BUSTED</h2>
+    <p id="end-text"></p>
+    <button id="btn-again">BACK ON THE STREET</button>
+  </div>
+
+  <div id="errbox" class="hidden"></div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/world.js"></script>
+<script src="js/vehicles.js"></script>
+<script src="js/player.js"></script>
+<script src="js/crew.js"></script>
+<script src="js/police.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/races.js"></script>
+<script src="js/missions.js"></script>
+<script src="js/hud.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
